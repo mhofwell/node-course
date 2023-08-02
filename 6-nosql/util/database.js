@@ -1,11 +1,12 @@
 const mongodb = require('mongodb');
+
 const MongoClient = mongodb.MongoClient;
 
 let _db;
 
 const mongoConnect = (callback) => {
-    MongoClient.connect(
-        'mongodb+srv://mhofwell:TX7ZAge5Qz2Pl4KR@cluster0.lgz2ngw.mongodb.net/shop?retryWrites=true&w=majority',
+     MongoClient.connect(
+        'mongodb+srv://mhofwell:ZDTQ8kJZLvtnkarX@cluster0.lgz2ngw.mongodb.net/shop?retryWrites=true&w=majority',
         { useUnifiedTopology: true }
     )
         .then((client) => {
