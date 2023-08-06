@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
     User.findById('64caab418d8bf3553ae46316')
         .then((user) => {
+            // need to create a real user object so we can use methods we created on the User class. 
             req.user = new User(user.name, user.email, user.cart, user._id);
             next();
         })
