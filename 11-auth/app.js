@@ -40,7 +40,7 @@ app.use(
 );
 
 app.use(csrfProtection);
-app.use(flash());
+app.use(flash())
 
 app.use((req, res, next) => {
     if (!req.session.user) {
