@@ -4,6 +4,7 @@ const path = require('path');
 const multer = require('multer');
 
 const feedRoutes = require('./routes/feed');
+const authRoutes = require('./routes/auth');
 const { default: mongoose } = require('mongoose');
 
 const app = express();
@@ -58,6 +59,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/feed', feedRoutes);
+app.use('/auth', authRoutes);
 
 // we use this as the next error middleware handler.
 // for example the next() in the catch() block in the createPost method will hit this.
@@ -65,9 +67,11 @@ app.use((err, req, res, next) => {
     console.log(err);
     const status = err.statusCode || 500;
     const message = err.message;
+    const data = err.data;
     // we return this to the user with a status and message from the createPost method
     res.status(status).json({
         message: message,
+        data: data,
     });
 });
 
@@ -78,6 +82,13 @@ mongoose
     .connect(uri)
     .then((result) => {
         console.log('MongoDb Connected');
-        app.listen(8080);
+        const server = app.listen(8080);
+        // when you () at the end of a function you execute the function that that function returns.
+        // we use this http server to establish our socket connection.
+        const io = require('./socket').init(server)
+        // will get executed for every client that connects
+        io.on('connection', (socket) => {
+            console.log('Client connected');
+        });
     })
     .catch((err) => console.log(err));

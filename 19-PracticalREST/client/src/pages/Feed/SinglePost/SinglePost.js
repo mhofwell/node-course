@@ -15,7 +15,13 @@ class SinglePost extends Component {
     componentDidMount() {
         // extracted from the URL in the frontend
         const postId = this.props.match.params.postId;
-        fetch('http://localhost:8080/feed/post/' + postId)
+        fetch('http://localhost:8080/feed/post/' + postId, {
+            headers: {
+                // Authhorization is a standard header
+                // Authorization header is enabled in the app.js for the server
+                Authorization: 'Bearer ' + this.props.token,
+            },
+        })
             .then((res) => {
                 if (res.status !== 200) {
                     throw new Error('Failed to fetch status');
@@ -23,7 +29,7 @@ class SinglePost extends Component {
                 return res.json();
             })
             .then((resData) => {
-              // in the response data from the server controller we get the post object back. resData
+                // in the response data from the server controller we get the post object back. resData
                 this.setState({
                     title: resData.post.title,
                     author: resData.post.creator.name,
